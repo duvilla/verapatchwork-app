@@ -1,0 +1,14 @@
+.rodape {
+  text-align: center;
+}
+
+.imagem {
+  width: 350px;
+  height: 350px;
+  object-fit: contain;
+}
+
+.image-container {
+  text-align: center;
+  background-color: black;
+}
