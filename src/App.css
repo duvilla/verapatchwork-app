@@ -1,15 +1,15 @@
 .app {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f4f5f7;
 }
 
 .content-area {
   margin: 0 auto;
-  width: 1280px;
+  width: 1300px;
 }
 
 nav {
-  padding: 30px;
+  padding: 20px;
   max-width: 250px;
   text-align: center;
   background-color: rgb(211, 211, 211);
@@ -32,17 +32,18 @@ nav h2 {
 .meio {
   margin-top: 30px;
   display: flex;
+  align-items: flex-start;
 }
 
 .galeria {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 
 .item-galeria {
-  margin-right: 15px;
-  margin-left: 15px;
+  margin-right: 8px;
+  margin-left: 8px;
 }
 
 .link {

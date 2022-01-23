@@ -33,6 +33,11 @@ function App() {
       nome: 'Flor',
       imagem: testePatchwork2,
       preco: '145.00'
+    },
+    {
+      nome: 'item a mais',
+      imagem: testePatchwork2,
+      preco: '200.00'
     }
   ]
 
