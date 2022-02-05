@@ -2,7 +2,7 @@ import './Patchwork.css'
 function Patchwork(props) {
   const { nome, imagem, preco, className } = props
   return (
-    <div className={className}>
+    <div className={`patchwork-base ${className}`}>
       <div className="image-container">
         <img src={imagem} alt={`${nome}`} className="imagem" />
       </div>

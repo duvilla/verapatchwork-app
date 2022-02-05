@@ -1,12 +1,18 @@
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useMemo, useState, useEffect } from 'react'
+import { useLocation } from 'react-router'
 import './App.css';
 import Patchwork from './components/Patchwork';
 import logo from './images/vera-logo.jfif'
 
-import hurdur from './images/hurdur.png'
-import testePatchwork from './images/teste-patchwork.png'
-import testePatchwork2 from './images/teste-patchwork2.png'
+function useQuery() {
+  const { search } = useLocation();
+
+  return useMemo(() => new URLSearchParams(search), [search]);
+}
 
 function App() {
+  const [patchworkList, setPatchworkList] = useState([])
   const categorias = [
     "Almofadas",
     "Bolsas",
@@ -18,65 +24,82 @@ function App() {
     "Toalhas"
   ]
 
-  const patchworkList = [
-    {
-      nome: 'Hurdur',
-      imagem: hurdur,
-      preco: '60.00'
-    },
-    {
-      nome: 'Cavalo',
-      imagem: testePatchwork,
-      preco: '45.00'
-    },
-    {
-      nome: 'Flor',
-      imagem: testePatchwork2,
-      preco: '145.00'
-    },
-    {
-      nome: 'item a mais',
-      imagem: testePatchwork2,
-      preco: '200.00'
-    }
-  ]
+  function PatchworkList() {
+    let query = useQuery()
+    const categoria = query.get('categoria')
+
+    const filteredPatchworks = patchworkList.filter(patchwork => patchwork.categoria === categoria)
+
+    return (
+      <div className="galeria">
+        {filteredPatchworks.map(patchwork => {
+          return (
+            <Patchwork
+              key={patchwork.nome}
+              className="item-galeria"
+              nome={patchwork.nome}
+              imagem={patchwork.imagem}
+              preco={patchwork.preco}
+            />
+          )
+        })}
+      </div>
+    )
+  }
+
+  useEffect(async () => {
+    const response = await fetch("http://localhost:1337/api/patchworks/?populate=*")
+    const { data, meta } = await response.json()
+    const list = data.map(item => {
+      const { attributes } = item
+      const { titulo, preco, imagem, categoria } = attributes
+      const { data: imagemData } = imagem
+      const { attributes: imagemAttributes } = imagemData
+      const { url } = imagemAttributes
+
+      const { data: categoriaData } = categoria
+      const { attributes: categoriaAttributes } = categoriaData
+      const { titulo: categoriaTitulo } = categoriaAttributes
+
+      return {
+        nome: titulo,
+        preco,
+        imagem: `http://localhost:1337${url}`,
+        categoria: categoriaTitulo
+      }
+    })
+    setPatchworkList(list)
+  }, [])
 
   return (
     <div className="app">
-      <header className="header">
-        <div className="content-area">
-          <img src={logo} alt="logo" />
-        </div>
-      </header>
+      <Router>
+        <header className="header">
+          <div className="content-area">
+            <img src={logo} alt="logo" />
+          </div>
+        </header>
 
-      <div className="content-area meio">
-        <nav>
-          <h2>Categorias</h2>
-          {categorias.map(cat => {
-            return (
-              <div key={cat}>
-                <a className="link" href="/#">{cat}</a>
-              </div>
-            )
-          })}
-        </nav>
-        <div className="galeria">
-          {patchworkList.map(patchwork => {
-            return (
-              <Patchwork
-                className="item-galeria"
-                nome={patchwork.nome}
-                imagem={patchwork.imagem}
-                preco={patchwork.preco}
-              />
-            )
-          })}
+        <div className="content-area meio">
+          <nav>
+            <h2>Categorias</h2>
+            {categorias.map(cat => {
+              return (
+                <div key={cat}>
+                  <Link className="link" to={`/?categoria=${cat}`}>{cat}</Link>
+                </div>
+              )
+            })}
+          </nav>
+          <Routes>
+            <Route path="/" element={<PatchworkList />}></Route>
+          </Routes>
         </div>
-      </div>
 
-      <footer>
-        footer
-      </footer>
+        <footer>
+          footer
+        </footer>
+      </Router>
     </div>
   );
 }

@@ -8,7 +8,7 @@
   width: 1300px;
 }
 
-nav {
+.nav {
   padding: 20px;
   max-width: 250px;
   text-align: center;
@@ -16,7 +16,8 @@ nav {
   border-radius: 15px;
 }
 
-nav h2 {
+.nav h2 {
+  font-size: 26px;
   margin-top: 0;
 }
 
