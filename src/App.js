@@ -47,28 +47,31 @@ function App() {
     )
   }
 
-  useEffect(async () => {
-    const response = await fetch("http://localhost:1337/api/patchworks/?populate=*")
-    const { data, meta } = await response.json()
-    const list = data.map(item => {
-      const { attributes } = item
-      const { titulo, preco, imagem, categoria } = attributes
-      const { data: imagemData } = imagem
-      const { attributes: imagemAttributes } = imagemData
-      const { url } = imagemAttributes
+  useEffect(() => {
+    const loadPatchworks = async () => {
+      const response = await fetch("http://localhost:1337/api/patchworks/?populate=*")
+      const { data } = await response.json()
+      const list = data.map(item => {
+        const { attributes } = item
+        const { titulo, preco, imagem, categoria } = attributes
+        const { data: imagemData } = imagem
+        const { attributes: imagemAttributes } = imagemData
+        const { url } = imagemAttributes
 
-      const { data: categoriaData } = categoria
-      const { attributes: categoriaAttributes } = categoriaData
-      const { titulo: categoriaTitulo } = categoriaAttributes
+        const { data: categoriaData } = categoria
+        const { attributes: categoriaAttributes } = categoriaData
+        const { titulo: categoriaTitulo } = categoriaAttributes
 
-      return {
-        nome: titulo,
-        preco,
-        imagem: `http://localhost:1337${url}`,
-        categoria: categoriaTitulo
-      }
-    })
-    setPatchworkList(list)
+        return {
+          nome: titulo,
+          preco,
+          imagem: `http://localhost:1337${url}`,
+          categoria: categoriaTitulo
+        }
+      })
+      setPatchworkList(list)
+    }
+    loadPatchworks();
   }, [])
 
   return (
