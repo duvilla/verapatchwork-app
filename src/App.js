@@ -49,8 +49,7 @@ function App() {
 
   useEffect(() => {
     const loadPatchworks = async () => {
-      console.log(process.env.REACT_APP_API_URL)
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/patchworks/?populate=*`)
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/patchwork/?populate=*`)
       const { data } = await response.json()
       const list = data.map(item => {
         const { attributes } = item
