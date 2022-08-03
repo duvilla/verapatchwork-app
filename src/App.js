@@ -100,7 +100,7 @@ function App() {
         </div>
 
         <footer>
-          footer
+          
         </footer>
       </Router>
     </div>
