@@ -20,7 +20,7 @@ function App() {
     "Máscaras",
     "Quadros",
     "Necessaire",
-    "Trilhos",
+    "Trilhos",  
     "Toalhas"
   ]
 
