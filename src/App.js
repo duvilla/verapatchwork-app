@@ -27,9 +27,7 @@ function App() {
   function PatchworkList() {
     let query = useQuery()
     const categoria = query.get('categoria')
-
     const filteredPatchworks = patchworkList.filter(patchwork => patchwork.categoria === categoria)
-
     return (
       <div className="galeria">
         {filteredPatchworks.map(patchwork => {
@@ -38,7 +36,7 @@ function App() {
               key={patchwork.nome}
               className="item-galeria"
               nome={patchwork.nome}
-              imagem={patchwork.imagem}
+              foto={patchwork.foto}
               preco={patchwork.preco}
             />
           )
@@ -49,24 +47,27 @@ function App() {
 
   useEffect(() => {
     const loadPatchworks = async () => {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/patchwork/?populate=*`)
+      const headers = {
+        Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`
+      }
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/patchworks/?populate=*`, { headers })
       const { data } = await response.json()
       const list = data.map(item => {
         const { attributes } = item
-        const { titulo, preco, imagem, categoria } = attributes
-        const { data: imagemData } = imagem
+        const { titulo, preco, foto, categoria } = attributes
+        const { data: imagemData } = foto
         const { attributes: imagemAttributes } = imagemData
         const { url } = imagemAttributes
 
         const { data: categoriaData } = categoria
         const { attributes: categoriaAttributes } = categoriaData
-        const { titulo: categoriaTitulo } = categoriaAttributes
+        const { nome: categoriaNome } = categoriaAttributes
 
         return {
           nome: titulo,
           preco,
-          imagem: `http://localhost:1337${url}`,
-          categoria: categoriaTitulo
+          foto: url, 
+          categoria: categoriaNome
         }
       })
       setPatchworkList(list)

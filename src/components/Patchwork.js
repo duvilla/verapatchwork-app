@@ -1,10 +1,10 @@
 import './Patchwork.css'
 function Patchwork(props) {
-  const { nome, imagem, preco, className } = props
+  const { nome, foto, preco, className } = props
   return (
     <div className={`patchwork-base ${className}`}>
       <div className="image-container">
-        <img src={imagem} alt={`${nome}`} className="imagem" />
+        <img src={foto} alt={`${nome}`} className="imagem" />
       </div>
       <div className="rodape">
         <p>{nome}</p>
